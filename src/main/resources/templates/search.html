@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <meta name="referrer" content="origin"> -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+    <title>Better Reads</title>
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light"  style="padding-bottom: 20px">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">Better Reads</a>
+        
+        </div>
+      </nav>
+
+      <div th:insert="components/book-search :: search-panel"></div>
+      
+      <section class="content">
+        
+
+
+        <div class="card-group">
+
+        
+            <div class="card" style="flex: 0 0 18%; margin: 30px;" th:each="result: ${searchResults}">
+                <img th:src="${result.cover_i}" class="card-img-top" alt="...">
+                <div class="card-body">
+                <h5 class="card-title" th:text="${result.title}">Card title</h5>
+                <a href="#" th:href="@{'/books/' + ${result.key}}" class="btn btn-primary">View book</a>
+                </div>
+            </div>
+        </div>
+
+        
+
+        
+      </section>
+
+    </div>
+  </body>
+</html>

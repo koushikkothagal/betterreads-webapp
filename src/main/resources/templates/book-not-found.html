@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
@@ -8,6 +8,7 @@
     
 </head>
 <body>
+    <div th:insert="components/book-search :: search-panel"></div>
     <h1>Book not found</h1>
 </body>
 </html>

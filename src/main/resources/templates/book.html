@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
@@ -21,14 +21,15 @@
   </head>
   <body>
     <div class="container">
-      <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light"  style="padding-bottom: 20px">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light"  style="padding-bottom: 20px">
         <div class="container-fluid">
           <a class="navbar-brand" href="/">Better Reads</a>
         
         </div>
-      </nav> -->
+      </nav>
 
 
+      <div th:insert="components/book-search :: search-panel"></div>
       
       <section class="content">
 
@@ -45,6 +46,47 @@
                 <p class="card-text" th:text="${book.description}">Book description</p>
                 <p class="card-text">Published Date: <small class="text-muted" th:text="${book.publishedDate}">2020-01-01</small></p>
                 
+                <form th:if="${loginId}" th:attr="action=@{/addUserBook}" method="POST">
+                  <input type="hidden"
+                    th:name="${_csrf.parameterName}"
+                    th:value="${_csrf.token}"/>
+                    <input type="hidden"
+                      name="bookId"
+                      th:value="${book.id}" />
+
+                  <div class="mb-3">
+                    <label for="startDate" class="form-label">Start date</label>
+                    <input type="date" class="form-control" 
+                      id="startDate" name="startDate" th:value="${userBooks.startedDate}" >
+                  </div>
+                  <div class="mb-3">
+                    <label for="completedDate" class="form-label">Completed date</label>
+                    <input type="date" class="form-control" 
+                      id="completedDate" name="completedDate" th:value="${userBooks.completedDate}"  >
+                  </div>
+                  <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select id="readingStatus" name="readingStatus" class="form-select" aria-label="Reading status" th:field="${userBooks.readingStatus}">
+                      <option selected value="3">Status</option>
+                      <option value="0-reading">Currently Reading</option>
+                      <option value="1-finished">Finished</option>
+                      <option value="2-dnf">Did Not Finish</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="rating" class="form-label">Rating</label>
+                    <select id="rating" name="rating" class="form-select" aria-label="Rating" th:field="${userBooks.rating}">
+                      <option selected value="0">Select Rating</option>
+                      <option value="1">&#9733;</option>
+                      <option value="2">&#9733;&#9733;</option>
+                      <option value="3">&#9733;&#9733;&#9733;</option>
+                      <option value="4">&#9733;&#9733;&#9733;&#9733;</option>
+                      <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733;</option>                      
+                    </select>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+
               </div>
               
             </div>

@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.javabrains</groupId>
-	<artifactId>github-auth-template</artifactId>
+	<artifactId>betterreads</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>github-auth-template</name>
+	<name>betterreads</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>

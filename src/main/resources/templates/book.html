@@ -46,6 +46,11 @@
                 <p class="card-text" th:text="${book.description}">Book description</p>
                 <p class="card-text">Published Date: <small class="text-muted" th:text="${book.publishedDate}">2020-01-01</small></p>
                 
+                <div th:unless="${loginId}" class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                  <p class="card-text">Login to track this book</p>
+                  <a type="button" href="/oauth2/authorization/github" class="btn btn-primary">Login via GitHub</a>
+                </div>
+
                 <form th:if="${loginId}" th:attr="action=@{/addUserBook}" method="POST">
                   <input type="hidden"
                     th:name="${_csrf.parameterName}"

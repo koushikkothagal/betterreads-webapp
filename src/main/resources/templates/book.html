@@ -41,14 +41,18 @@
             </div>
             <div class="col-md-8">
               <div class="card-body">
-                <h5 class="card-title display-1" th:text="${book.name}">Name</h5>
-                <p class="card-text display-5" th:text="${book.authorNames}">Author name</p>
+                <h5 class="card-title display-2" th:text="${book.name}">Name</h5>
+                <p class="card-text display-6" th:text="${book.authorNames}">Author name</p>
                 <p class="card-text" th:text="${book.description}">Book description</p>
                 <p class="card-text">Published Date: <small class="text-muted" th:text="${book.publishedDate}">2020-01-01</small></p>
                 
-                <div th:unless="${loginId}" class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                  <p class="card-text">Login to track this book</p>
-                  <a type="button" href="/oauth2/authorization/github" class="btn btn-primary">Login via GitHub</a>
+
+                <div class="card" th:unless="${loginId}" >
+                  <div class="card-body">
+                    <h5 class="card-title">Login to track this book</h5>
+                    <p class="card-text">Mark reading dates, completion status and star ratings</p>
+                    <a href="/oauth2/authorization/github" class="btn btn-primary">Login via GitHub</a>
+                  </div>
                 </div>
 
                 <form th:if="${loginId}" th:attr="action=@{/addUserBook}" method="POST">

@@ -31,7 +31,7 @@ public class BookController {
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
             String coverImageUrl = "/images/no-image.png";
-            if (book.getCoverIds() != null & book.getCoverIds().size() > 0) {
+            if (book.getCoverIds() != null && book.getCoverIds().size() > 0) {
                 coverImageUrl = COVER_IMAGE_ROOT + book.getCoverIds().get(0) + "-L.jpg";
             }
             model.addAttribute("coverImage", coverImageUrl);

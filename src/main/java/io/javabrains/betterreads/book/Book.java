@@ -11,6 +11,11 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.mapping.Table;
 import org.springframework.data.cassandra.core.mapping.CassandraType.Name;
 
+/**
+ * Model that represents the books_by_id table in Cassandra.
+ * Stores the book information retrievable by the book ID
+ */
+
 @Table(value = "book_by_id")
 public class Book {
     

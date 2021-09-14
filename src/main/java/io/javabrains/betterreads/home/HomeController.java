@@ -3,7 +3,6 @@ package io.javabrains.betterreads.home;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.cassandra.core.query.CassandraPageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,10 +17,13 @@ import io.javabrains.betterreads.user.BooksByUserRepository;
 @Controller
 public class HomeController {
 
-    private final String COVER_IMAGE_ROOT = "http://covers.openlibrary.org/b/id/";
+    private static final String COVER_IMAGE_ROOT = "http://covers.openlibrary.org/b/id/";
 
-    @Autowired
-    BooksByUserRepository booksByUserRepository;
+    private final BooksByUserRepository booksByUserRepository;
+
+    public HomeController(BooksByUserRepository booksByUserRepository){
+        this.booksByUserRepository = booksByUserRepository;
+    }
 
     @GetMapping("/")
     public String home(@AuthenticationPrincipal OAuth2User principal, Model model) {

@@ -3,7 +3,6 @@ package io.javabrains.betterreads.userbooks;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -20,14 +19,15 @@ import io.javabrains.betterreads.user.BooksByUserRepository;
 @Controller
 public class UserBooksController {
 
-    @Autowired 
-    UserBooksRepository userBooksRepository;
+    private final UserBooksRepository userBooksRepository;
+    private final BooksByUserRepository booksByUserRepository;
+    private final BookRepository bookRepository;
 
-    @Autowired 
-    BooksByUserRepository booksByUserRepository;
-
-    @Autowired 
-    BookRepository bookRepository;
+    public UserBooksController(UserBooksRepository userBooksRepository, BooksByUserRepository booksByUserRepository, BookRepository bookRepository){
+        this.userBooksRepository = userBooksRepository;
+        this.booksByUserRepository = booksByUserRepository;
+        this.bookRepository = bookRepository;
+    }
     
     @PostMapping("/addUserBook")
     public ModelAndView addBookForUser(
@@ -40,7 +40,7 @@ public class UserBooksController {
 
         String bookId = formData.getFirst("bookId");
         Optional<Book> optionalBook = bookRepository.findById(bookId);
-        if (!optionalBook.isPresent()) {
+        if (optionalBook.isEmpty()) {
             return new ModelAndView("redirect:/");
         }
         Book book = optionalBook.get();

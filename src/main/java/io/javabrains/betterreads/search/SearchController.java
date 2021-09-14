@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 @Controller
 public class SearchController {
 
-    private final String COVER_IMAGE_ROOT = "http://covers.openlibrary.org/b/id/";
+    private static final String COVER_IMAGE_ROOT = "http://covers.openlibrary.org/b/id/";
 
     private final WebClient webClient;
 

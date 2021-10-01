@@ -2,7 +2,6 @@ package io.javabrains.betterreads.book;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -17,23 +16,22 @@ import io.javabrains.betterreads.userbooks.UserBooksRepository;
 @Controller
 public class BookController {
 
-    private final String COVER_IMAGE_ROOT = "http://covers.openlibrary.org/b/id/";
+    private static final String COVER_IMAGE_ROOT = "http://covers.openlibrary.org/b/id/";
 
-    @Autowired
-    BookRepository bookRepository;
+    private final BookRepository bookRepository;
+    private final UserBooksRepository userBooksRepository;
 
-    @Autowired
-    UserBooksRepository userBooksRepository;
+    public BookController(BookRepository bookRepository, UserBooksRepository userBooksRepository){
+        this.bookRepository = bookRepository;
+        this.userBooksRepository = userBooksRepository;
+    }
     
     @GetMapping(value = "/books/{bookId}")
     public String getBook(@PathVariable String bookId, Model model, @AuthenticationPrincipal OAuth2User principal) {
         Optional<Book> optionalBook = bookRepository.findById(bookId);
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
-            String coverImageUrl = "/images/no-image.png";
-            if (book.getCoverIds() != null && book.getCoverIds().size() > 0) {
-                coverImageUrl = COVER_IMAGE_ROOT + book.getCoverIds().get(0) + "-L.jpg";
-            }
+            String coverImageUrl = getCoverImageUrl(book);
             model.addAttribute("coverImage", coverImageUrl);
             model.addAttribute("book", book);
             if (principal != null && principal.getAttribute("login") != null) {
@@ -42,17 +40,21 @@ public class BookController {
                 UserBooksPrimaryKey key = new UserBooksPrimaryKey();
                 key.setBookId(bookId);
                 key.setUserId(userId);
-                Optional<UserBooks> userBooks = userBooksRepository.findById(key);
-                if (userBooks.isPresent()) {
-                    model.addAttribute("userBooks", userBooks.get());
-                } else {
-                    model.addAttribute("userBooks", new UserBooks());
-                }
+                UserBooks userBooks = userBooksRepository.findById(key).orElse(new UserBooks());
+                model.addAttribute("userBooks", userBooks);
             }
             return "book";
 
 
         }
         return "book-not-found";
+    }
+
+    private String getCoverImageUrl(Book book){
+        String coverImageUrl = "/images/no-image.png";
+        if (book.getCoverIds() != null && book.getCoverIds().size() > 0) {
+            coverImageUrl = COVER_IMAGE_ROOT + book.getCoverIds().get(0) + "-L.jpg";
+        }
+        return coverImageUrl;
     }
 }

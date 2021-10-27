@@ -1,6 +1,7 @@
 package io.javabrains.betterreads.userbooks;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import io.javabrains.betterreads.book.Book;
 import io.javabrains.betterreads.book.BookRepository;
 import io.javabrains.betterreads.user.BooksByUser;
 import io.javabrains.betterreads.user.BooksByUserRepository;
+import io.javabrains.betterreads.validation.DateValidator;
 
 @Controller
 public class UserBooksController {
@@ -55,8 +57,19 @@ public class UserBooksController {
 
         int rating = Integer.parseInt(formData.getFirst("rating"));
 
-        userBooks.setStartedDate(LocalDate.parse(formData.getFirst("startDate")));
-        userBooks.setCompletedDate(LocalDate.parse(formData.getFirst("completedDate")));
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE;
+        DateValidator validator = new DateValidator(dateFormatter);
+        String startDate = formData.getFirst("startDate");
+        String completedDate = formData.getFirst("completedDate");
+
+        if (validator.completedDateIsGreaterThanStartDate(startDate, completedDate)) {
+            if (validator.isValid(startDate)) {
+                userBooks.setStartedDate(LocalDate.parse(startDate));
+            }
+            if (validator.isValid(completedDate)) {
+                userBooks.setCompletedDate(LocalDate.parse(completedDate));
+            }
+        }
         userBooks.setRating(rating);
         userBooks.setReadingStatus(formData.getFirst("readingStatus"));
 

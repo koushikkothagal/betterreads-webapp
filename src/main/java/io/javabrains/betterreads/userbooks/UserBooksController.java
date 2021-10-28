@@ -62,13 +62,11 @@ public class UserBooksController {
         String startDate = formData.getFirst("startDate");
         String completedDate = formData.getFirst("completedDate");
 
-        if (validator.completedDateIsGreaterThanStartDate(startDate, completedDate)) {
-            if (validator.isValid(startDate)) {
-                userBooks.setStartedDate(LocalDate.parse(startDate));
-            }
-            if (validator.isValid(completedDate)) {
-                userBooks.setCompletedDate(LocalDate.parse(completedDate));
-            }
+        if (validator.isValid(startDate)) {
+            userBooks.setStartedDate(LocalDate.parse(startDate));
+        }
+        if (validator.isValid(completedDate) && validator.completedDateIsGreaterThanStartDate(startDate, completedDate)) {
+            userBooks.setCompletedDate(LocalDate.parse(completedDate));
         }
         userBooks.setRating(rating);
         userBooks.setReadingStatus(formData.getFirst("readingStatus"));

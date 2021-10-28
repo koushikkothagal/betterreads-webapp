@@ -6,7 +6,7 @@ import java.time.format.DateTimeParseException;
 
 public class DateValidator implements IDateValidator {
     private DateTimeFormatter dateFormatter;
-    
+
     public DateValidator(DateTimeFormatter dateFormatter) {
         this.dateFormatter = dateFormatter;
     }
@@ -23,9 +23,9 @@ public class DateValidator implements IDateValidator {
 
     @Override
     public boolean completedDateIsGreaterThanStartDate(String startDate, String completedDate) {
-        if (LocalDate.parse(startDate).isAfter(LocalDate.parse(completedDate))) {
-            return false;
+        if (!startDate.equals("") && !completedDate.equals("")) {
+            return LocalDate.parse(completedDate).isAfter(LocalDate.parse(startDate));
         }
-        return true;
+        return false;
     }
 }
